@@ -1,2 +1,2 @@
 # Sch00L_Pr0ject
-Another try for a security projects involving networking and other stuff.....
+Check it out if u present interest and if u have time.
