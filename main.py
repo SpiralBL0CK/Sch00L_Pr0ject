@@ -18,24 +18,36 @@ def copy_content(website):
 	f.write(soup.prettify().encode('utf8'))
 	f.close()
 
+def http_split_exploit():
+    new_arr = []
+    h = urllib.urlopen("https://www.google.com")
+    raw_payload = h.info().headers
+    for i in re.findall(r'([A-Za-z:]+)',str(raw_payload)):
+        new_arr.append(i+"%0d%0a")
+    new_arr.append("<script>alert()</script>")
+    for z in new_arr:
+        print str(z)
+
+def http_more_complicate_exploit():
+    h = urllib.urlopen("https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation")
+    raw_payload = h.info().headers
+    for z in raw_payload:
+        print z ,
+    if re.match('[^Cache |]',str(raw_payload)):
+
+
 def inject_custom_packets():
     
     #print("cant connect,maybe you are missing a packet.Check your dependencies")        
     #test if packet can be send
     p = srloop(IP(dst="127.0.0.1")/"HELLO",count=10)
     
-    
-def get_current_version():
-    current_version = platform.python_version()
-    if '2.7' in current_version:
-        print("sorry buddy you'll need to get python 3.6 to be able to run it")
-
 def check_if_clickhijacking():
     result = urlopen("https://www.lookout.net/test/clickjack.html")
     if 'X-Frame-Options' not in result.info():
         print "Possible clickjacking website found.Trying another test just to be shure!"
     soup = BeautifulSoup(result.read(),'html.parser')
-    if re.finditer('iframe src=',soup.prettify()):
+    if re.findall('[^iframe src= |]',soup.prettify()):
         print "Oh bud you have some issues!"
 
 def inject_custom_cookie():
@@ -121,6 +133,7 @@ def main():
 if __name__ == "__main__":
     #main()
     #check_if_waf()
-    check_if_clickhijacking()
+    #check_if_clickhijacking()
+    #http_split_exploit()
+    http_more_complicate_exploit()
 	#app.run(debug=True,host="0.0.0.0")
-
